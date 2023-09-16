@@ -1,0 +1,13 @@
+accelerator: gpu
+batch_size: 128
+check_val_every_n_epoch: 5
+ckpt_every_n_epoch: 20
+cnn_padding: 1
+datamodule: cifar10
+devices: 1
+lr: 0.05
+max_epochs: 20
+model: resnet
+resnet_small_input: True
+strategy: ddp_spawn_find_unused_parameters_false
+val_split: 0.1

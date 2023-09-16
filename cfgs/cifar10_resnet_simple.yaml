@@ -1,0 +1,12 @@
+accelerator: gpu
+batch_size: 128
+check_val_every_n_epoch: 5
+ckpt_every_n_epoch: 20
+datamodule: cifar10
+devices: 1
+lr: 0.05
+max_epochs: 20
+model: resnet
+resnet_small_input: True
+val_split: 0.1
+weight_decay: 0
