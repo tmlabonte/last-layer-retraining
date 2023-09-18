@@ -48,16 +48,6 @@ def add_input_args(parser):
                help="The number of steps after which a model checkpoint will be saved.")
     parser.add("--class_weights", default=[], nargs="*", type=float,
                help="The amount by which to weight each class in the loss function.")
-    parser.add("--cnn_batchnorm", default=True, type=lambda x: bool(strtobool(x)),
-               help="Whether to use batch normalization in the CNN.")
-    parser.add("--cnn_initial_width", default=32, type=int,
-               help="The number of filters in the first layer of the CNN.")
-    parser.add("--cnn_kernel_size", default=3, type=int,
-               help="The size of the kernel in the CNN.")
-    parser.add("--cnn_num_layers", default=5, type=int,
-               help="The number of layers in the CNN.")
-    parser.add("--cnn_padding", default=0, type=int,
-               help="The amount of input padding in the CNN.")
     parser.add("--data_augmentation", default=True, type=lambda x: bool(strtobool(x)),
                help="Whether to use data augmentation as specified in the DataModule.")
     parser.add("--data_dir", default="data",
@@ -68,14 +58,6 @@ def add_input_args(parser):
                help="The probability by which a node will be dropped out.")
     parser.add("--eval_only", default=False, type=lambda x: bool(strtobool(x)),
                help="Whether to skip training and only evaluate the model.")
-    parser.add("--ffn_activation", choices=["relu", "sigmoid"], default="relu",
-               help="The activation function to use in the FFN.")
-    parser.add("--ffn_hidden_dim", default=256, type=int,
-               help="The number of nodes in the FFN hidden layers.")
-    parser.add("--ffn_input_dim", default=3072, type=int,
-               help="The input dimension in the FFN.")
-    parser.add("--ffn_num_layers", default=3, type=int,
-               help="The number of layers in the FFN.")
     parser.add("--input_channels", default=3, type=int,
                help="The number of channels for image inputs.")
     parser.add("--label_noise", default=0, type=float,
@@ -99,12 +81,6 @@ def add_input_args(parser):
                help="The name of the Model to utilize.")
     parser.add("--momentum", default=0.9, type=float,
                help="The momentum value to utilize with the SGD optimizer.")
-    parser.add("--nin_num_layers", default=2, type=int,
-               help="The number of layers in the NiN.")
-    parser.add("--nin_padding", default=1, type=int,
-               help="The amount of input padding in the NiN.")
-    parser.add("--nin_width", default=192, type=int,
-               help="The number of nodes in the NiN hidden layers.")
     parser.add("--num_workers", default=4, type=int,
                help="The number of sub-processes to use for data loading.")
     parser.add("--optimizer", choices=["adam", "adamw", "sgd"], default="sgd",

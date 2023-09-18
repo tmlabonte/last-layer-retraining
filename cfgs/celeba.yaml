@@ -11,3 +11,4 @@ max_epochs: 20
 metrics: ["loss", "acc", "acc_by_group"]
 model: resnet
 resnet_version: 50
+strategy: ddp_spawn_find_unused_parameters_false
