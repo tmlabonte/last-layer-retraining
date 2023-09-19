@@ -1,5 +1,5 @@
 # Towards Last-layer Retraining for Group Robustness with Fewer Annotations
-## Official codebase for the paper: https://https://arxiv.org/abs/2309.08534.
+## Official codebase for the paper: https://arxiv.org/abs/2309.08534.
 
 ### Installation
 ```
