@@ -8,7 +8,7 @@ devices: 1
 lr: 1e-5
 lr_scheduler: linear
 max_epochs: 10
-metrics: ["loss", "acc", "acc_by_group"]
+metrics: [loss, acc, acc_by_group]
 model: bert
 optimizer: adamw
 strategy: ddp_spawn_find_unused_parameters_false
