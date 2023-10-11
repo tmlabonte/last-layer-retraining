@@ -1,5 +1,5 @@
 # Towards Last-layer Retraining for Group Robustness with Fewer Annotations
-## Official codebase for the paper: https://arxiv.org/abs/2309.08534.
+### Official codebase for the NeurIPS 2023 paper: https://arxiv.org/abs/2309.08534.
 
 ### Installation
 ```
@@ -25,9 +25,10 @@ By default, the program will run ERM training, last-layer retraining, and SELF w
 ### Citation and License
 This codebase uses [Milkshake](https://github.com/tmlabonte/milkshake) as a template and inherits its MIT License. Please consider using the following citation:
 ```
-@article{labonte23towards,
+@inproceedings{labonte23towards,
   author={Tyler LaBonte and Vidya Muthukumar and Abhishek Kumar},
   title={Towards Last-layer Retraining for Group Robustness with Fewer Annotations},
+  booktitle={Conference on Neural Information Processing Systems (NeurIPS)},
   year={2023},
 }
 ```
