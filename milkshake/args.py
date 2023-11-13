@@ -81,6 +81,8 @@ def add_input_args(parser):
                help="The name of the Model to utilize.")
     parser.add("--momentum", default=0.9, type=float,
                help="The momentum value to utilize with the SGD optimizer.")
+    parser.add("--no_test", default=False, type=lambda x: bool(strtobool(x)),
+               help="Whether to skip the test phase (only train and val)")
     parser.add("--num_workers", default=4, type=int,
                help="The number of sub-processes to use for data loading.")
     parser.add("--optimizer", choices=["adam", "adamw", "sgd"], default="sgd",
@@ -109,7 +111,7 @@ def add_input_args(parser):
                help="Whether to freeze all parameters except the last layer.")
     parser.add("--val_split", default=0.2, type=float,
                help="The proportion of training data to reserve for validation.")
-    parser.add("--wandb", default=True, type=lambda x: bool(strtobool(x)),
+    parser.add("--wandb", default=False, type=lambda x: bool(strtobool(x)),
                help="Whether to log with Weights and Biases (otherwise uses TensorBoard).")
     parser.add("--wandb_dir", default="wandb",
                help="The name of the directory where wandb outputs will be saved.")

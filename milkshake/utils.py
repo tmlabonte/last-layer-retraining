@@ -16,11 +16,11 @@ from torch._utils import _accumulate
 from milkshake.datamodules.dataset import Subset
 
 
-def get_weights(args, version, best=None, idx=None):
+def get_weights_helper(ckpt_path, version, best=None, idx=None):
     """Returns weights path given model version and checkpoint index.
     
     Args:
-        args: The configuration dictionary.
+        ckpt_path: The root directory for checkpoints.
         version: The model's PyTorch Lightning version.
         best: Whether to return the best model checkpoint.
         idx: The model's checkpoint index (-1 selects the latest checkpoint).
@@ -29,10 +29,6 @@ def get_weights(args, version, best=None, idx=None):
         The filepath of the desired model weights.
     """
 
-    ckpt_path = ""
-    if args.wandb:
-        ckpt_path = args.wandb_dir
-    
     # Selects the right naming convention for PL versions based on
     # whether the version input is an int or a string.
     if type(version) == int:
@@ -47,6 +43,24 @@ def get_weights(args, version, best=None, idx=None):
     else:
         list_of_weights = sorted([w for w in list_of_weights if "best" not in w])
         return list_of_weights[idx]
+
+def get_weights(args, version, best=None, idx=None):
+    """Returns weights path given model version and checkpoint index.
+    
+    Args:
+        args: The configuration dictionary.
+        version: The model's PyTorch Lightning version.
+        best: Whether to return the best model checkpoint.
+        idx: The model's checkpoint index (-1 selects the latest checkpoint).
+    
+    Returns:
+        The filepath of the desired model weights.
+    """
+
+    try:
+        return get_weights_helper("", version, best=best, idx=idx)
+    except:
+        return get_weights_helper(args.wandb_dir, version, best=best, idx=idx)
 
 def compute_accuracy(probs, targets, num_classes, num_groups):
     """Computes top-1 and top-5 accuracies.

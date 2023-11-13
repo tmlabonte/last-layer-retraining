@@ -200,7 +200,11 @@ def main(
         trainer = load_trainer(args, addtl_callbacks=callbacks)
 
     val_metrics = trainer.validate(model, datamodule=datamodule, verbose=verbose)
-    test_metrics = trainer.test(model, datamodule=datamodule, verbose=verbose)
+
+    test_metrics = None
+    if not args.no_test:
+        test_metrics = trainer.test(model, datamodule=datamodule, verbose=verbose)
+
     args.devices = orig_devices
     args.strategy = orig_strategy
 

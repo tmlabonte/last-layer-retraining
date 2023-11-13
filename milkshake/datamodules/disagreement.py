@@ -369,6 +369,10 @@ class Disagreement(DataModule):
         all_probs = []
         all_targets = []
 
+        self.model.eval()
+        if "early-stop" in self.finetune_type:
+            self.early_stop_model.eval()
+
         # Performs misclassification or disagreement with self.model.
         with torch.no_grad():
             for i, batch in enumerate(dataloader):
@@ -376,28 +380,26 @@ class Disagreement(DataModule):
                 inputs = inputs.cuda()
                 targets = targets.cuda()
 
-                if "early-stop" in self.finetune_type:
-                    self.early_stop_model.eval()
-                    orig_logits = self.early_stop_model(inputs)
-                    orig_probs = F.softmax(orig_logits, dim=1)
-                    orig_preds = torch.argmax(orig_probs, dim=1)
-                else:
-                    self.model.eval()
+                if self.finetune_type == "random self":
                     orig_logits = self.model(inputs)
-                    orig_probs = F.softmax(orig_logits, dim=1)
-                    orig_preds = torch.argmax(orig_probs, dim=1)
-
-                if "misclassification" in self.finetune_type:
                     logits = self.model(inputs)
-                else:
-                    if "dropout" in self.finetune_type:
-                        self.model.train()
-                        logits = self.model(inputs)
-                    elif "early-stop" in self.finetune_type:
-                        logits = self.early_stop_model(inputs)
+                elif self.finetune_type == "misclassification self":
+                    orig_logits = self.model(inputs)
+                    logits = self.model(inputs)
+                elif self.finetune_type == "early-stop misclassification self":
+                    orig_logits = self.early_stop_model(inputs)
+                    logits = self.early_stop_model(inputs)
+                elif self.finetune_type == "dropout disagreement self":
+                    self.model.train()
+                    orig_logits = self.model(inputs)
+                    self.model.eval()
+                    logits = self.model(inputs)
+                elif self.finetune_type == "early-stop disagreement self":
+                    orig_logits = self.early_stop_model(inputs)
+                    logits = self.model(inputs)
 
+                orig_probs = F.softmax(orig_logits, dim=1)
                 probs = F.softmax(logits, dim=1)
-                preds = torch.argmax(probs, dim=1)
 
                 all_orig_logits.append(orig_logits)
                 all_logits.append(logits)
@@ -417,14 +419,19 @@ class Disagreement(DataModule):
         else:
             all_targets = all_targets
         
-        kldiv = F.kl_div(torch.log(all_probs), all_orig_probs, reduction="none")
-        kldiv = torch.mean(kldiv, dim=1).squeeze()
-        loss = F.cross_entropy(all_orig_logits, all_targets, reduction="none").squeeze()
-
         if "misclassification" in self.finetune_type:
+            loss = F.cross_entropy(all_orig_logits, all_targets, reduction="none").squeeze()
             disagreements = to_np(torch.topk(loss, k=self.num_data)[1])
         elif "disagreement" in self.finetune_type:
+            kldiv = F.kl_div(torch.log(all_probs), all_orig_probs, reduction="none")
+            kldiv = torch.mean(kldiv, dim=1).squeeze()
             disagreements = to_np(torch.topk(kldiv, k=self.num_data)[1])
+        elif "random" in self.finetune_type:
+            disagreements = np.random.default_rng(seed=self.seed).choice(
+                np.arange(len(all_targets)),
+                size=self.num_data,
+                replace=False,
+            )
 
         disagree = all_inds[disagreements]
             
