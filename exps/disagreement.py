@@ -5,7 +5,6 @@ from milkshake.utils import ignore_warnings
 ignore_warnings()
 
 # Imports Python builtins.
-from configargparse import Parser
 from copy import deepcopy
 from distutils.util import strtobool
 import os
@@ -14,6 +13,7 @@ import pickle
 import sys
 
 # Imports Python packages.
+from configargparse import Parser
 import numpy as np
 
 # Imports PyTorch packages.
