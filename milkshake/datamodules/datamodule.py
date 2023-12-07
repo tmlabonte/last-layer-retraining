@@ -7,7 +7,7 @@ import random
 
 # Imports Python packages.
 import numpy as np
-from numpy import default_rng
+from numpy.random import default_rng
 
 # Imports PyTorch packages.
 from torch import Generator, randperm
