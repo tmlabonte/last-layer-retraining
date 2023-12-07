@@ -7,6 +7,7 @@ import random
 
 # Imports Python packages.
 import numpy as np
+from numpy import default_rng
 
 # Imports PyTorch packages.
 from torch import Generator, randperm
@@ -134,15 +135,23 @@ class DataModule(VisionDataModule):
         Returns:
             The modified training dataset.
         """
-
+        
         if self.label_noise:
-            train_indices = dataset_train.train_indices
-            num_labels = len(train_indices)
-            num_noised_labels = int(self.label_noise * num_labels)
+            # Shuffle training data in unison.
+            num_samples = len(dataset_train.targets)
+            p = default_rng(seed=self.seed).permutation(num_samples)
+            dataset_train.train_indices = dataset_train.train_indices[p]
+            dataset_train.targets = dataset_train.targets[p]
 
-            for i, target in enumerate(train_indices[:num_noised_labels]):
-                labels = [j for j in range(self.num_classes) if j != i]
-                dataset_train.targets[i] = random.choice(labels)
+            # Injects label noise into the training dataset.
+            num_noised_labels = int(self.label_noise * num_samples)
+            for i, target in enumerate(dataset_train.targets[:num_noised_labels]):
+                if target.ndim > 0:
+                    labels = [j for j in range(self.num_classes) if j != target[0]]
+                    dataset_train.targets[i][0] = random.choice(labels)
+                else:
+                    labels = [j for j in range(self.num_classes) if j != target]
+                    dataset_train.targets[i] = random.choice(labels)
 
         return dataset_train
 
