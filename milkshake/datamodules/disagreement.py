@@ -114,7 +114,6 @@ class Disagreement(DataModule):
 
         if self.split == "combined":
             dataset_t.train_indices = list(range(len(dataset_t)))
-
         dataset_d.val_indices = new_dis_inds
         dataset_v.val_indices = new_val_inds
 
@@ -478,4 +477,6 @@ class Disagreement(DataModule):
                 print("Computing disagreements...")
                 self.disagreement()
                 del self.model
+
+        print(self.load_msg())
 

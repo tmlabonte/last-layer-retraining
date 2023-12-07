@@ -137,21 +137,18 @@ class DataModule(VisionDataModule):
         """
         
         if self.label_noise:
-            # Shuffle training data in unison.
-            num_samples = len(dataset_train.targets)
-            p = default_rng(seed=self.seed).permutation(num_samples)
-            dataset_train.train_indices = dataset_train.train_indices[p]
-            dataset_train.targets = dataset_train.targets[p]
+            default_rng(seed=self.seed).shuffle(dataset_train.train_indices)
 
             # Injects label noise into the training dataset.
-            num_noised_labels = int(self.label_noise * num_samples)
-            for i, target in enumerate(dataset_train.targets[:num_noised_labels]):
+            num_noised_labels = int(self.label_noise * len(dataset_train.train_indices))
+            for idx in dataset_train.train_indices[:num_noised_labels]:
+                target = dataset_train.targets[idx]
                 if target.ndim > 0:
                     labels = [j for j in range(self.num_classes) if j != target[0]]
-                    dataset_train.targets[i][0] = random.choice(labels)
+                    dataset_train.targets[idx][0] = random.choice(labels)
                 else:
                     labels = [j for j in range(self.num_classes) if j != target]
-                    dataset_train.targets[i] = random.choice(labels)
+                    dataset_train.targets[idx] = random.choice(labels)
 
         return dataset_train
 
