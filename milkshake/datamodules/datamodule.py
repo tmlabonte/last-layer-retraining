@@ -135,7 +135,7 @@ class DataModule(VisionDataModule):
         Returns:
             The modified training dataset.
         """
-
+        
         if self.label_noise:
             # Shuffle training data in unison.
             num_samples = len(dataset_train.targets)
