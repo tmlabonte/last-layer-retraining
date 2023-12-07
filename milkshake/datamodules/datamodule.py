@@ -137,7 +137,7 @@ class DataModule(VisionDataModule):
         """
         
         if self.label_noise:
-            # Shuffle training data in unison.
+            # Shuffles training data in unison.
             num_samples = len(dataset_train.targets)
             p = default_rng(seed=self.seed).permutation(num_samples)
             dataset_train.train_indices = dataset_train.train_indices[p]
