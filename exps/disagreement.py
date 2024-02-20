@@ -281,9 +281,7 @@ def experiment(args, model_class):
 
     # Sets finetune types. Note that "group-unbalanced retraining" will be
     # either class-unbalanced or class-balanced based on the value
-    # of args.balanced_sampler. Note that this does NOT set which techniques
-    # will be run during the experiment (it just sets the strings). To run only
-    # specific techniques, comment out the calls below or use --no_self.
+    # of args.balanced_sampler.
     finetune_types = [
         "group-unbalanced retraining",
         "group-balanced retraining",
