@@ -117,12 +117,12 @@ class DataModule(VisionDataModule):
             else:
                 msg = msg + f" with {int(self.val_split * 100)}% random val split."
 
-            if self.data_augmentation:
-                msg = msg[:-1] + " and data augmentation."
-            if self.label_noise:
-                msg = msg[:-1] + f" and {int(self.label_noise * 100)}% label noise."
-            if self.balanced_sampler:
-                msg = msg[:-1] + " and a balanced sampler."
+        if self.data_augmentation:
+            msg = msg[:-1] + " and data augmentation."
+        if self.label_noise:
+            msg = msg[:-1] + f" and {int(self.label_noise * 100)}% label noise."
+        if self.balanced_sampler:
+            msg = msg[:-1] + " and a balanced sampler."
 
         return msg
 
