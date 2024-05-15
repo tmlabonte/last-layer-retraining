@@ -18,7 +18,7 @@ To run an experiment, specify the config with `-c`. For example,
 
 To run a demo of early-stop disagreement SELF, use
 
-`python exps/disagreement.py -c cfgs/waterbirds/yaml --demo`
+`python exps/disagreement.py -c cfgs/waterbirds.yaml --demo`
 
 By default, the program will run ERM training, last-layer retraining, and SELF with model selection.
 
